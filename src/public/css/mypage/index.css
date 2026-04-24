@@ -1,0 +1,10 @@
+.mypage__user-icon {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.mypage__user-icon--placeholder {
+    background-color: #ccc;
+}

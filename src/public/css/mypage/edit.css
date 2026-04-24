@@ -1,0 +1,19 @@
+.form__img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.form__img--placeholder {
+    background-color: #ccc;
+}
+
+/* ボタンアレンジ */
+.form__file-btn {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #ccc;
+    cursor: pointer;
+    border-radius: 4px;
+}
