@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddressRequest;
 use App\Models\Item;
 use App\Models\Order;
-use Illuminate\Http\Request;
-use ReturnTypeWillChange;
 
 class OrderController extends Controller
 {
@@ -45,9 +44,9 @@ class OrderController extends Controller
         return view('orders.address', compact('item'));
     }
 
-    public function update(Request $request, $item_id)
+    public function update(AddressRequest $request, $item_id)
     {
-        $item = Item::findOrFail($item_id);
+        Item::findOrFail($item_id);
 
         $order = $request->only([
             'postal_code',

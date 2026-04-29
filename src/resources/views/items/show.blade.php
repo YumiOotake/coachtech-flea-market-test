@@ -6,7 +6,7 @@
     <div class="show__content">
 
         <div class="item-show">
-            <section class="item-show__item">
+            <section class="item-show__section">
                 <div class="item-show__image">
                     <img src="{{ asset('storage/' . $item->image) }}" alt="商品画像" class="item-show__img">
                 </div>
@@ -20,7 +20,7 @@
                     <span class="item-show__text--tax">&lpar;税込&rpar;</span>
                 </div>
             </section>
-            <section class="item-show__item">
+            <section class="item-show__section">
                 <div class="item-show__like">
                     @if ($item->likedBy->contains(auth()->id()))
                         <form action="{{ route('like.destroy', ['item_id' => $item->id]) }}" method="POST"
@@ -44,16 +44,16 @@
                     @endif
                 </div>
             </section>
-            <div class="item-show__item">
+            <div class="item-show__section">
                 <a href="{{ route('orders.create', ['item_id' => $item->id]) }}" class="item-show__button--purchase">
                     購入手続きへ
                 </a>
             </div>
-            <section class="item-show__item">
+            <section class="item-show__section">
                 <h2 class="item-show__title">商品説明</h2>
                 <p class="item-show__text">{{ $item->description }}</p>
             </section>
-            <section class="item-show__item">
+            <section class="item-show__section">
                 <h2 class="item-show__title">商品の情報</h2>
                 <div class="item-show__group">
                     <span class="item-show__sub-title">カテゴリー</span>
@@ -66,13 +66,14 @@
                     <p class="item-show__text">{{ $item->condition->name }}</p>
                 </div>
             </section>
-            <section class="item-show__item">
+            <section class="item-show__section">
                 <h2 class="item-show__title">コメント&lpar;{{ $item->comments()->count() }}&rpar;</h2>
                 @if ($item->comments()->count() > 0)
                     @foreach ($item->comments as $comment)
                         <div class="item-show__group">
                             @if ($comment->user->profile?->profile_image)
-                                <img src="{{ asset('storage/' . $comment->user->profile?->profile_image) }}" alt="プロフィール画像" class="form__img">
+                                <img src="{{ asset('storage/' . $comment->user->profile?->profile_image) }}" alt="プロフィール画像"
+                                    class="form__img">
                             @else
                                 <div class="form__img form__img--placeholder"></div>
                             @endif
@@ -82,12 +83,20 @@
                             <p class="item-show__user-name">{{ $comment->content }}</p>
                         </div>
                     @endforeach
-                @else
-                    <p class="item-show__empty">コメントがありません</p>
                 @endif
                 <form action="{{ route('comment.store', $item) }}" method="POST" class="item-show__form">
                     @csrf
-                    <textarea name="content" cols="30" rows="10" class="item-show__textarea"></textarea>
+                    <div class="item-show__title">
+                        <label for="content" class="form__label">商品へのコメント</label>
+                    </div>
+                    <div class="item-show__content">
+                        <textarea id="content" name="content" cols="30" rows="10" class="item-show__textarea"></textarea>
+                    </div>
+                    <div class="item-show__error">
+                    @error('content')
+                        {{ $message }}
+                    @enderror
+                </div>
                     <button type="submit" class="item-show__add-comment">
                         コメントを送信する
                     </button>

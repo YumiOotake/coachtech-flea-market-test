@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProfileRequest;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -31,7 +32,7 @@ class MypageController extends Controller
         return view('mypage/edit', compact('user'));
     }
 
-    public function update(Request $request)
+    public function update(ProfileRequest $request)
     {
         $user = auth()->user();
         $profile = Profile::firstOrNew(['user_id' => $user->id]);
