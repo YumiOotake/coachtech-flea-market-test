@@ -32,14 +32,14 @@
                 <div class="form__group-content">
                     @foreach ($categories as $category)
                         <label class="form__category-btn">
-                            <input type="checkbox" name="category_ids[]" value="{{ $category->id }}"
+                            <input type="checkbox" name="category_id[]" value="{{ $category->id }}"
                                 class="form__input-checkbox">
                             <span>{{ $category->name }}</span>
                         </label>
                     @endforeach
                 </div>
                 <div class="form__error">
-                    @error('category_ids')
+                    @error('category_id')
                         {{ $message }}
                     @enderror
                 </div>

@@ -31,12 +31,12 @@
                 <div class="order-confirm__item">
                     <div class="order-confirm__address">
                         <h2 class="order-confirm__label">配送先</h2>
-                        <a href="{{ route('orders.address', ['item_id' => $item->id]) }}"
+                        <a href="{{ route('orders.edit', ['item_id' => $item->id]) }}"
                             class="order-confirm__link">変更する</a>
                     </div>
-                    <p class="order-confirm__text">〒 {{ $user->postal_code }}</p>
-                    <p class="order-confirm__text">{{ $user->address }}</p>
-                    <p class="order-confirm__text">{{ $user->building }}</p>
+                    <p class="order-confirm__text">〒 {{ session('postal_code') ?? $user->profile->postal_code }}</p>
+                    <p class="order-confirm__text">{{ session('address') ?? $user->profile->address }}</p>
+                    <p class="order-confirm__text">{{ session('building') ?? $user->profile?->building }}</p>
                 </div>
             </div>
         </div>
@@ -47,12 +47,12 @@
                     <dt class="form__title">商品代金</dt>
                     <dd class="order-confirm__text">{{ $item->price }}</dd>
                 </div>
-                <div class="order-confirm__item">
+                {{-- <div class="order-confirm__item">
                     <dt class="form__title">支払い方法</dt>
                     <dd class="order-confirm__text">{{ $order }}</dd>
-                </div>
+                </div> --}}
             </dl>
-            <form action="{{ route('orders.purchase', $item) }}" method="POST" class="order-confirm__form">
+            <form action="{{ route('orders.store', ['item_id' => $item->id]) }}" method="POST" class="order-confirm__form">
                 @csrf
                 <button type="submit" class="order-confirm__button">購入する</button>
             </form>

@@ -6,6 +6,7 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Models\Profile;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -15,7 +16,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Contracts\LoginResponse;
-
+use Laravel\Fortify\Contracts\RegisterResponse;
+use Laravel\Fortify\Http\Responses\RegisterResponse as ResponsesRegisterResponse;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -24,7 +26,10 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            \Laravel\Fortify\Http\Requests\LoginRequest::class,
+            \App\Http\Requests\LoginRequest::class
+        );
     }
 
     /**
@@ -45,12 +50,26 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
 
+        $this->app->instance(RegisterResponse::class, new class implements RegisterResponse {
+            public function toResponse($request)
+            {
+                $user = Auth::user();
+                $profile = Profile::where('user_id', $user->id)->first();
+
+                if (!$profile || is_null($profile->postal_code) || is_null($profile->address)) {
+                    return redirect()->route('mypage.edit');
+                }
+                return redirect()->intended(RouteServiceProvider::HOME);
+            }
+        });
+
         $this->app->instance(LoginResponse::class, new class implements LoginResponse {
             public function toResponse($request)
             {
                 $user = Auth::user();
+                $profile = Profile::where('user_id', $user->id)->first();
 
-                if (is_null($user->postal_code) || is_null($user->address)) {
+                if (!$profile || is_null($profile->postal_code) || is_null($profile->address)) {
                     return redirect()->route('mypage.edit');
                 }
                 return redirect()->intended(RouteServiceProvider::HOME);

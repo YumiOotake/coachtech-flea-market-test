@@ -7,8 +7,9 @@
         <div class="form__heading">
             <h1 class="form__heading-title">住所の変更</h1>
         </div>
-        <form action="{{ route('orders.edit', ['item_id' => $item->id]) }}" method="POST" class="form">
+        <form action="{{ route('orders.update', ['item_id' => $item->id]) }}" method="POST" class="form">
             @csrf
+            @method('PATCH')
             <div class="form__group">
                 <div class="form__group-title">
                     <label for="postal_code" class="form__label">郵便番号</label>

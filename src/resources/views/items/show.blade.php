@@ -17,13 +17,14 @@
                 <div class="item-show__price">
                     <span class="item-show__text--dollar">¥</span>
                     <p class="item-show__text">{{ $item->price }}</p>
-                    <span class="item-show__text--tax">¥</span>
+                    <span class="item-show__text--tax">&lpar;税込&rpar;</span>
                 </div>
             </section>
             <section class="item-show__item">
                 <div class="item-show__like">
                     @if ($item->likedBy->contains(auth()->id()))
-                        <form action="{{ route('like.destroy', $item) }}" method="POST" class="item-show__like-form">
+                        <form action="{{ route('like.destroy', ['item_id' => $item->id]) }}" method="POST"
+                            class="item-show__like-form">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="item-show__remove-like">
@@ -32,7 +33,8 @@
                         </form>
                         <span class="item-show__like-count">{{ $item->likedBy->count() }}</span>
                     @else
-                        <form action="{{ route('like.store', $item) }}" method="POST" class="item-show__like-form">
+                        <form action="{{ route('like.store', ['item_id' => $item->id]) }}" method="POST"
+                            class="item-show__like-form">
                             @csrf
                             <button type="submit" class="item-show__add-like">
                                 <img src="{{ asset('storage/' . 'images/ハートロゴ_デフォルト.png') }}" alt="ハートロゴデフォルト画像">
@@ -43,7 +45,7 @@
                 </div>
             </section>
             <div class="item-show__item">
-                <a href="{{ route('orders.create', $item) }}" class="item-show__button--purchase">
+                <a href="{{ route('orders.create', ['item_id' => $item->id]) }}" class="item-show__button--purchase">
                     購入手続きへ
                 </a>
             </div>
@@ -69,8 +71,11 @@
                 @if ($item->comments()->count() > 0)
                     @foreach ($item->comments as $comment)
                         <div class="item-show__group">
-                            <img src="{{ asset('storage/' . $comment->user->profile_image) }}" alt="商品画像"
-                                class="item-show__user-icon">
+                            @if ($comment->user->profile?->profile_image)
+                                <img src="{{ asset('storage/' . $comment->user->profile?->profile_image) }}" alt="プロフィール画像" class="form__img">
+                            @else
+                                <div class="form__img form__img--placeholder"></div>
+                            @endif
                             <p class="item-show__user-name">{{ $comment->user->name }}</p>
                         </div>
                         <div class="item-show__group">
