@@ -3,9 +3,6 @@
 namespace App\Providers;
 
 use App\Actions\Fortify\CreateNewUser;
-use App\Actions\Fortify\ResetUserPassword;
-use App\Actions\Fortify\UpdateUserPassword;
-use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Models\Profile;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -17,7 +14,6 @@ use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\RegisterResponse;
-use Laravel\Fortify\Http\Responses\RegisterResponse as ResponsesRegisterResponse;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -38,7 +34,6 @@ class FortifyServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Fortify::createUsersUsing(CreateNewUser::class);
-        Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
 
         RateLimiter::for('login', function (Request $request) {
             $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
@@ -53,21 +48,20 @@ class FortifyServiceProvider extends ServiceProvider
         $this->app->instance(RegisterResponse::class, new class implements RegisterResponse {
             public function toResponse($request)
             {
-                $user = Auth::user();
-                $profile = Profile::where('user_id', $user->id)->first();
-
-                if (!$profile || is_null($profile->postal_code) || is_null($profile->address)) {
-                    return redirect()->route('mypage.edit');
-                }
-                return redirect()->intended(RouteServiceProvider::HOME);
+                return redirect()->route('verification.notice');
             }
         });
 
         $this->app->instance(LoginResponse::class, new class implements LoginResponse {
             public function toResponse($request)
             {
+                /** @var \App\Models\User $user */
                 $user = Auth::user();
                 $profile = Profile::where('user_id', $user->id)->first();
+
+                if (!$user->hasVerifiedEmail()) {
+                    return redirect()->route('verification.notice');
+                }
 
                 if (!$profile || is_null($profile->postal_code) || is_null($profile->address)) {
                     return redirect()->route('mypage.edit');
