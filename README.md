@@ -22,7 +22,13 @@ Laravel環境構築
     DB_DATABASE=laravel_db
     DB_USERNAME=laravel_user
     DB_PASSWORD=laravel_pass
+
+    STRIPE_PUBLIC_KEY=your_public_key
+    STRIPE_SECRET_KEY=your_secret_key
     ```
+    StripeのAPIキーは以下から取得してください。
+    https://dashboard.stripe.com
+
 4.  php artisan key:generate
 5.  php artisan migrate
 6.  php artisan db:seed

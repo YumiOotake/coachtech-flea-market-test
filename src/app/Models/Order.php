@@ -15,6 +15,7 @@ class Order extends Model
         'postal_code',
         'address',
         'building',
+        'payment_method',
     ];
 
     protected $casts = [
@@ -30,5 +31,14 @@ class Order extends Model
     public function item()
     {
         return $this->belongsTo(Item::class);
+    }
+
+    public function getPaymentMethodLabelAttribute(): string
+    {
+        return match ($this->payment_method) {
+            0 => 'コンビニ支払い',
+            1 => 'カード支払い',
+            default => 'コンビニ支払い'
+        };
     }
 }
