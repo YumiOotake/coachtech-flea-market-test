@@ -50,8 +50,8 @@ class Item extends Model
         return $this->hasMany(Comment::class);
     }
 
-    public function orders()
+    public function order()
     {
-        return $this->hasMany(Order::class);
+        return $this->hasOne(Order::class);
     }
 }

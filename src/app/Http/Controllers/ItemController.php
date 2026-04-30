@@ -12,24 +12,38 @@ class ItemController extends Controller
 {
     public function index(Request $request)
     {
+        $query = Item::query();
         $user = auth()->user();
         $tab = $request->query('tab');
+        $keyword = $request->query('keyword');
 
         if ($tab === 'mylist') {
             if (!auth()->check()) {
                 $items = collect();
+                return view('items/index', compact('items'));
             } else {
-                $items = $user->likedItems()->get();
+                $items = $user->likedItems();
+                if (!empty($keyword)) {
+                    $items->where('name', 'like', "%{$keyword}%");
+                }
             }
         } else {
             if (!auth()->check()) {
-                $items = Item::all();
+                $items = Item::query();
+                if (!empty($keyword)) {
+                    $items->where('name', 'like', "%{$keyword}%");
+                }
             } else {
-                $items = Item::where('user_id', '!=', auth()->id())->get();
+                $items = Item::where('user_id', '!=', auth()->id());
+                if (!empty($keyword)) {
+                    $items->where('name', 'like', "%{$keyword}%");
+                }
             }
         }
 
-        return view('items/index', compact('items'));
+        $items = $items->get();
+
+        return view('items/index', compact('items', 'keyword'));
     }
 
     public function show($item_id)
@@ -53,7 +67,7 @@ class ItemController extends Controller
 
         $item = Item::create([
             'user_id' => auth()->id(),
-            'condition_id' =>$request->condition_id,
+            'condition_id' => $request->condition_id,
             'image' => $imagePath,
             'name' => $request->name,
             'brand' => $request->brand,

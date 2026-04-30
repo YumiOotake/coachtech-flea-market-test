@@ -7,7 +7,7 @@
         <div class="item__heading">
             <a href="{{ route('items.index') }}"
                 class="item__tab {{ request('tab') !== 'mylist' ? 'item__tab--active' : '' }}">おすすめ</a>
-            <a href="{{ route('items.index', ['tab' => 'mylist']) }}"
+            <a href="{{ route('items.index', ['tab' => 'mylist', 'keyword' => request('keyword')]) }}"
                 class="item__tab {{ request('tab') === 'mylist' ? 'item__tab--active' : '' }}">マイリスト</a>
         </div>
         @forelse ($items as $item)
@@ -16,6 +16,9 @@
                     <figure class="item-card__figure">
                         <div class="item-card__image">
                             <img src="{{ asset('storage/' . $item->image) }}" alt="商品画像" class="item-card__img">
+                            @if ($item->order()->exists())
+                                <p class="item-card__sold">Sold</p>
+                            @endif
                         </div>
                         <figcaption class="item-card__figcaption">
                             <p class="item-card__figcaption--title">{{ $item->name }}</p>
