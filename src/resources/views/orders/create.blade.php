@@ -5,19 +5,19 @@
 @section('content')
     <div class="order-confirm">
         <div class="order-confirm__left">
-            <div class="order-confirm__group">
+            <div class="order-confirm__group order-confirm__detail">
                 <div class="order-confirm__item">
                     <img src="{{ asset('storage/' . $item->image) }}" alt="商品画像" class="order-confirm__image">
                 </div>
                 <div class="order-confirm__item">
-                    <h1 class="order-confirm__text">{{ $item->name }}</h1>
-                    <p class="order-confirm__text">¥ {{ $item->price }}</p>
+                    <h1 class="order-confirm__name">{{ $item->name }}</h1>
+                    <p class="order-confirm__price">¥ {{ number_format($item->price) }}</p>
                 </div>
             </div>
             <div class="order-confirm__group">
                 <div class="order-confirm__item">
                     <h2 class="order-confirm__label">支払い方法</h2>
-                    <select name="payment_method" class="form__select" id="payment_method">
+                    <select name="payment_method" class="order-confirm__select" id="payment_method">
                         <option value="">選択してください</option>
                         <option value="0">コンビニ支払い</option>
                         <option value="1">カード支払い</option>
@@ -26,25 +26,27 @@
             </div>
             <div class="order-confirm__group">
                 <div class="order-confirm__item">
-                    <div class="order-confirm__address">
+                    <div class="order-confirm__address-header">
                         <h2 class="order-confirm__label">配送先</h2>
                         <a href="{{ route('orders.edit', ['item_id' => $item->id]) }}" class="order-confirm__link">変更する</a>
                     </div>
-                    <p class="order-confirm__text">〒 {{ session('postal_code') ?? $user->profile->postal_code }}</p>
-                    <p class="order-confirm__text">{{ session('address') ?? $user->profile->address }}</p>
-                    <p class="order-confirm__text">{{ session('building') ?? $user->profile?->building }}</p>
+                    <div class="order-confirm__address-body">
+                        <p class="order-confirm__text">〒 {{ session('postal_code') ?? $user->profile->postal_code }}</p>
+                        <p class="order-confirm__text">{{ session('address') ?? $user->profile->address }}</p>
+                        <p class="order-confirm__text">{{ session('building') ?? $user->profile?->building }}</p>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="order-confirm__right">
-            <dl class="order-confirm__group">
-                <div class="order-confirm__item">
-                    <dt class="form__title">商品代金</dt>
-                    <dd class="order-confirm__text">{{ $item->price }}</dd>
+            <dl class="order-confirm__summary">
+                <div class="order-confirm__summary-row">
+                    <dt class="order-confirm__summary-label">商品代金</dt>
+                    <dd class="order-confirm__text">{{ number_format($item->price) }}</dd>
                 </div>
-                <div class="order-confirm__item">
-                    <dt class="form__title">支払い方法</dt>
+                <div class="order-confirm__summary-row">
+                    <dt class="order-confirm__summary-label">支払い方法</dt>
                     <dd class="order-confirm__text" id="payment_method_label">未選択</dd>
                 </div>
             </dl>

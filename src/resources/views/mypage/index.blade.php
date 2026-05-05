@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="{{ asset('css/mypage/index.css') }}">
 @endsection
 @section('content')
-    <section class="mypage__content">
+    <section class="mypage__section">
         <div class="mypage__profile">
             @if ($user->profile?->profile_image)
                 <img src="{{ asset('storage/' . $user->profile?->profile_image) }}" alt="プロフィール画像" class="mypage__user-icon">
@@ -24,19 +24,21 @@
             <a href="{{ route('mypage.index', ['page' => 'buy']) }}"
                 class="item__tab {{ request('page') === 'buy' ? 'item__tab--active' : '' }}">購入した商品</a>
         </div>
-        @forelse ($items as $item)
-            <article class="item-card">
-                <figure class="item-card__figure">
-                    <div class="item-card__image">
-                        <img src="{{ asset('storage/' . $item->image) }}" alt="商品画像" class="item-card__img">
-                    </div>
-                    <figcaption class="item-card__figcaption">
-                        <p class="item-card__figcaption--title">{{ $item->name }}</p>
-                    </figcaption>
-                </figure>
-            </article>
-        @empty
-            <p class="item__empty">商品が見つかりませんでした</p>
-        @endforelse
+        <div class="item__list">
+            @forelse ($items as $item)
+                <article class="item-card">
+                    <figure class="item-card__figure">
+                        <div class="item-card__image">
+                            <img src="{{ asset('storage/' . $item->image) }}" alt="商品画像" class="item-card__img">
+                        </div>
+                        <figcaption class="item-card__figcaption">
+                            <p class="item-card__title">{{ $item->name }}</p>
+                        </figcaption>
+                    </figure>
+                </article>
+            @empty
+                <p class="item__empty">商品がありません</p>
+            @endforelse
+        </div>
     </div>
 @endsection

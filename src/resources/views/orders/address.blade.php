@@ -5,7 +5,7 @@
 @section('content')
     <div class="form__content">
         <div class="form__heading">
-            <h1 class="form__heading-title">住所の変更</h1>
+            <h1 class="form__heading-title form__heading-address">住所の変更</h1>
         </div>
         <form action="{{ route('orders.update', ['item_id' => $item->id]) }}" method="POST" class="form">
             @csrf

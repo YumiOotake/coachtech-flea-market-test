@@ -34,6 +34,25 @@ Laravel環境構築
 6.  php artisan db:seed
 7.  php artisan storage:link
 
+## メール認証設定（Mailtrap）
+
+1. [Mailtrap](https://mailtrap.io)にアクセスしてアカウント登録
+2. Email Testing → Inboxes → 自分のInboxを選択
+3. SMTP Settings → Integrations で「Laravel 8+」を選択
+4. 表示された内容を`.env`に設定
+
+以下を編集：
+```
+MAIL_MAILER=smtp
+MAIL_HOST=sandbox.smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=your_username
+MAIL_PASSWORD=your_password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS="hello@example.com"
+MAIL_FROM_NAME="${APP_NAME}"
+```
+
 ## 使用技術(実行環境)
 
 - PHP 8.1
@@ -49,5 +68,5 @@ Laravel環境構築
 
 ## URL
 
-・開発環境：http://localhost/products
+・開発環境：http://localhost/
 ・phpMyAdmin：http://localhost:8080/

@@ -41,7 +41,7 @@
                     @auth
                         <form action="{{ route('logout') }}" method="post" class="header__nav-item">
                             @csrf
-                            <button type="submit" class="header__nav-link">ログアウト</button>
+                            <button type="submit" class="header__nav-button">ログアウト</button>
                         </form>
                     @endauth
                     <div class="header__nav-item">

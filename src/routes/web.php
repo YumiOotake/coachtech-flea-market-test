@@ -32,7 +32,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('comment/{item_id}', [CommentController::class, 'store'])->name('comment.store');
 
-
     Route::get('/purchase/{item_id}', [OrderController::class, 'create'])->name('orders.create');
     Route::post('/purchase/{item_id}', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/purchase/{item_id}/success', [OrderController::class, 'success'])->name('orders.success');

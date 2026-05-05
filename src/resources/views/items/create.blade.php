@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/form.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/items/create.css') }}">
 @endsection
 @section('content')
     <div class="form__content">
@@ -13,8 +14,9 @@
                 <div class="form__group-title">
                     <label for="image" class="form__label">商品画像</label>
                 </div>
-                <div class="form__group-content">
-                    <input type="file" id="image" name="image" value="{{ old('image') }}" class="form__input">
+                <div class="form__group-content form__group--image">
+                    <label for="image" class="form__file-btn">画像を選択する</label>
+                    <input type="file" name="image" id="image" class="form__input--image">
                 </div>
                 <div class="form__error">
                     @error('image')
@@ -29,12 +31,12 @@
                 <div class="form__group-title">
                     <label for="category" class="form__label">カテゴリー</label>
                 </div>
-                <div class="form__group-content">
+                <div class="form__group-content form__group--category">
                     @foreach ($categories as $category)
                         <label class="form__category-btn">
                             <input type="checkbox" name="category_id[]" value="{{ $category->id }}"
-                                class="form__input-checkbox">
-                            <span>{{ $category->name }}</span>
+                                class="form__input--checkbox">
+                            <span class="form__input--text">{{ $category->name }}</span>
                         </label>
                     @endforeach
                 </div>
@@ -49,14 +51,16 @@
                     <label for="condition" class="form__label">商品の状態</label>
                 </div>
                 <div class="form__group-content">
-                    <select name="condition_id" class="form__select" id="condition">
-                        <option value="">選択してください</option>
-                        @foreach ($conditions as $condition)
-                            <option
-                                value="{{ $condition->id }}"{{ old('condition_id') == $condition->id ? 'selected' : '' }}>
-                                {{ $condition->name }}</option>
-                        @endforeach
-                    </select>
+                    <div class="form__select-wrapper">
+                        <select name="condition_id" class="form__input form__input--select" id="condition">
+                            <option value="" disabled selected>選択してください</option>
+                            @foreach ($conditions as $condition)
+                                <option
+                                    value="{{ $condition->id }}"{{ old('condition_id') == $condition->id ? 'selected' : '' }}>
+                                    {{ $condition->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
                 <div class="form__error">
                     @error('condition_id')
@@ -98,7 +102,7 @@
                     <label for="description" class="form__label">商品の説明</label>
                 </div>
                 <div class="form__group-content">
-                    <textarea name="description" id="description" cols="30" rows="10" class="form__textarea">{{ old('description') }}</textarea>
+                    <textarea name="description" id="description" cols="30" rows="10" class="form__input form__textarea">{{ old('description') }}</textarea>
                 </div>
                 <div class="form__error">
                     @error('description')
@@ -111,8 +115,10 @@
                     <label for="price" class="form__label">販売価格</label>
                 </div>
                 <div class="form__group-content">
-                    <input type="text" id="price" name="price" value="{{ old('price') }}" class="form__input"
-                        placeholder="¥">
+                    <div class="form__price-wrapper">
+                        <input type="text" id="price" name="price" value="{{ old('price') }}"
+                            class="form__input form__input--price">
+                    </div>
                 </div>
                 <div class="form__error">
                     @error('price')

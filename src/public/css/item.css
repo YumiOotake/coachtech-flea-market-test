@@ -1,23 +1,86 @@
-.item-card__image {
-    position: relative;
+.item__content {
+    width: 100%;
 }
 
+.item__heading {
+    border-bottom: 2px solid var(--color-border);
+    margin-top: 47px;
+    padding: 0 5% 5px;
+}
+
+.item__tab {
+    color: var(--color-border);
+    margin-right: 47px;
+}
+
+.item__tab--active {
+    color: var(--color-red);
+}
+
+.item__list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    padding: 60px 5%;
+}
+
+.item-card {
+    width: 100%;
+    min-width: 0;
+}
+
+.item-card__link {
+    display: block;
+}
+
+.item-card__image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+}
+
+.item-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.item-card__figcaption {
+    margin-top: 8px;
+    min-height: 30px;
+}
+
+.item-card__title {
+    font-size: 25px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 
 .item-card__sold {
     display: flex;
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.6);
-    /* 白の半透明フィルタ */
-    color: #333;
+    inset: 0;
+    background-color: rgba(199, 199, 199, 0.6);
+    color: var(--color-red);
     font-weight: bold;
-    font-size: 20px;
+    font-size: 50px;
     justify-content: center;
     align-items: center;
     z-index: 10;
     pointer-events: none;
-    /* 下の要素をクリックできるようにする */
+}
+
+@media screen and (min-width: 1400px) and (max-width: 1540px) {
+    .item__list {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+            padding: 48px 4%;
+        }
+
+        .item-card__title {
+            font-size: 22px;
+        }
 }

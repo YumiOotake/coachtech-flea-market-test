@@ -10,6 +10,7 @@
             <a href="{{ route('items.index', ['tab' => 'mylist', 'keyword' => request('keyword')]) }}"
                 class="item__tab {{ request('tab') === 'mylist' ? 'item__tab--active' : '' }}">マイリスト</a>
         </div>
+        <div class="item__list">
         @forelse ($items as $item)
             <article class="item-card">
                 <a href="{{ route('items.show', ['item_id' => $item->id]) }}" class="item-card__link">
@@ -21,13 +22,14 @@
                             @endif
                         </div>
                         <figcaption class="item-card__figcaption">
-                            <p class="item-card__figcaption--title">{{ $item->name }}</p>
+                            <p class="item-card__title">{{ $item->name }}</p>
                         </figcaption>
                     </figure>
                 </a>
             </article>
         @empty
-            <p class="item__empty">商品が見つかりませんでした</p>
+            <p class="item__empty">商品はありません</p>
         @endforelse
+        </div>
     </div>
 @endsection

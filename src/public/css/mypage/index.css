@@ -1,10 +1,39 @@
+.mypage__section {
+    max-width: 1000px;
+    margin: 70px auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.mypage__profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .mypage__user-icon {
     width: 120px;
     height: 120px;
     border-radius: 50%;
     object-fit: cover;
+    margin-right: 57px;
 }
 
 .mypage__user-icon--placeholder {
-    background-color: #ccc;
+    background-color: var(--color-bg);
+}
+
+.mypage__user-name {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.mypage__edit-link {
+    font-size: 26px;
+    font-weight: bold;
+    color: var(--color-red);
+    border: 1px solid var(--color-red);
+    border-radius: 10px;
+    padding: 14px 40px;
 }

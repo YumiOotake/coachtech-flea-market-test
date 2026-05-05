@@ -12,15 +12,18 @@
             @csrf
             @method('PATCH')
             <div class="form__group">
-                <div class="form__image">
-                    @if ($user->profile?->profile_image)
-                        <img src="{{ asset('storage/' . $user->profile->profile_image) }}" alt="プロフィール画像" class="form__img">
-                    @else
-                        <div class="form__img form__img--placeholder"></div>
-                    @endif
+                <div class="form__profile">
+                    <div class="form__image">
+                        @if ($user->profile?->profile_image)
+                            <img src="{{ asset('storage/' . $user->profile->profile_image) }}" alt="プロフィール画像"
+                                class="form__img">
+                        @else
+                            <div class="form__img form__img--placeholder"></div>
+                        @endif
+                    </div>
+                    <label for="image" class="form__file-btn">画像を選択する</label>
+                    <input type="file" name="image" id="image" class="form__input--image">
                 </div>
-                <label for="image" class="form__file-btn">画像を選択する</label>
-                <input type="file" name="image" id="image" class="form__input--image">
                 <div class="form__error">
                     @error('image')
                         {{ $message }}
@@ -60,8 +63,8 @@
                     <label for="address" class="form__label">住所</label>
                 </div>
                 <div class="form__group-content">
-                    <input type="text" id="address" name="address" value="{{ old('address', $user->profile?->address) }}"
-                        class="form__input">
+                    <input type="text" id="address" name="address"
+                        value="{{ old('address', $user->profile?->address) }}" class="form__input">
                 </div>
                 <div class="form__error">
                     @error('address')
@@ -74,8 +77,8 @@
                     <label for="building" class="form__label">建物名</label>
                 </div>
                 <div class="form__group-content">
-                    <input type="text" id="building" name="building" value="{{ old('building', $user->profile?->building) }}"
-                        class="form__input">
+                    <input type="text" id="building" name="building"
+                        value="{{ old('building', $user->profile?->building) }}" class="form__input">
                 </div>
                 <div class="form__error">
                     @error('building')
