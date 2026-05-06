@@ -53,6 +53,29 @@ MAIL_FROM_ADDRESS="hello@example.com"
 MAIL_FROM_NAME="${APP_NAME}"
 ```
 
+## Stripeコンビニ払いのテスト
+### 事前設定
+
+1. Stripe CLIをインストール
+   https://stripe.com/docs/stripe-cli
+
+2. Stripeにログイン
+3. ターミナル①でWebhookを起動
+stripe listen --forward-to localhost/webhook/stripe
+4. 起動時に表示される`whsec_`から始まる文字列を`.env`に設定
+```
+STRIPE_WEBHOOK_SECRET=whsec_**************
+```
+5. 設定後にキャッシュをクリア
+php artisan config:clear
+
+### コンビニ支払いの流れ
+
+1. アプリでコンビニ払いを選択して「購入する」
+2. Stripe画面でコンビニを選択して番号を発行
+3. ターミナル①にWebhookの受信ログが表示される
+4. ordersテーブルに購入データが保存される
+
 ## 使用技術(実行環境)
 
 - PHP 8.1

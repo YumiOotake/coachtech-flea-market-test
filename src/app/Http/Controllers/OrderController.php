@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddressRequest;
+use App\Http\Requests\PurchaseRequest;
 use App\Models\Item;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -19,14 +20,19 @@ class OrderController extends Controller
         return view('orders.create', compact('item', 'user'));
     }
 
-    public function store(Request $request, $item_id)
+    public function store(PurchaseRequest $request, $item_id)
     {
         $item = Item::findOrFail($item_id);
+        $paymentMethodTypes = match ((string) $request->payment_method) {
+            '0' => ['konbini'],
+            '1' => ['card'],
+            default => ['card'],
+        };
 
         Stripe::setApiKey(config('services.stripe.secret'));
 
         $session = Session::create([
-            'payment_method_types' => ['card'],
+            'payment_method_types' => $paymentMethodTypes,
             'line_items' => [[
                 'price_data' => [
                     'currency'     => 'jpy',        // 日本円
@@ -39,10 +45,12 @@ class OrderController extends Controller
             ]],
             'mode' => 'payment',
             'metadata' => [
+                'user_id' => auth()->id(),
+                'item_id' => $item_id,
                 'payment_method' => $request->payment_method,
-                'postal_code' => session('postal_code') ?? auth()->user()->profile?->postal_code,
-                'address' => session('address') ?? auth()->user()->profile?->address,
-                'building' => session('building') ?? auth()->user()->profile?->building,
+                'postal_code' => $request->postal_code,
+                'address' => $request->address,
+                'building' => $request->building,
             ],
             // 成功・キャンセル時のリダイレクト先
             'success_url' => route('orders.success', ['item_id' => $item_id]) . '?session_id={CHECKOUT_SESSION_ID}',
@@ -54,28 +62,28 @@ class OrderController extends Controller
 
     public function success(Request $request, $item_id)
     {
-        Stripe::setApiKey(config('services.stripe.secret'));
+        // Stripe::setApiKey(config('services.stripe.secret'));
 
-        // session_idでStripeに決済完了を確認
-        $session = Session::retrieve($request->session_id);
+        // // session_idでStripeに決済完了を確認
+        // $session = Session::retrieve($request->session_id);
 
-        // 念のため決済完了チェック（不正アクセス対策）
-        if ($session->payment_status !== 'paid') {
-            return redirect()->route('items.show', ['item_id' => $item_id]);
-        }
+        // // 念のため決済完了チェック（不正アクセス対策）
+        // if ($session->payment_status !== 'paid') {
+        //     return redirect()->route('items.show', ['item_id' => $item_id]);
+        // }
 
-        $user = auth()->user();
+        // $user = auth()->user();
 
-        Order::create([
-            'user_id' => $user->id,
-            'item_id' => $item_id,
-            'postal_code' => $session->metadata->postal_code,
-            'address' => $session->metadata->address,
-            'building' => $session->metadata->building,
-            'payment_method' => $session->metadata->payment_method,
-        ]);
+        // Order::create([
+        //     'user_id' => $user->id,
+        //     'item_id' => $item_id,
+        //     'postal_code' => $session->metadata->postal_code,
+        //     'address' => $session->metadata->address,
+        //     'building' => $session->metadata->building,
+        //     'payment_method' => $session->metadata->payment_method,
+        // ]);
 
-        return redirect()->route('mypage.index');
+        return redirect()->route('items.index');
     }
 
     public function cancel($item_id)

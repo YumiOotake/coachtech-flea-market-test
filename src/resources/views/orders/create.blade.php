@@ -22,6 +22,11 @@
                         <option value="0">コンビニ支払い</option>
                         <option value="1">カード支払い</option>
                     </select>
+                    <div class="form__error">
+                        @error('payment_method')
+                            {{ $message }}
+                        @enderror
+                    </div>
                 </div>
             </div>
             <div class="order-confirm__group">
@@ -34,6 +39,14 @@
                         <p class="order-confirm__text">〒 {{ session('postal_code') ?? $user->profile->postal_code }}</p>
                         <p class="order-confirm__text">{{ session('address') ?? $user->profile->address }}</p>
                         <p class="order-confirm__text">{{ session('building') ?? $user->profile?->building }}</p>
+                        <div class="form__error">
+                        @error('postal_code')
+                            {{ $message }}
+                        @enderror
+                        @error('address')
+                            {{ $message }}
+                        @enderror
+                    </div>
                     </div>
                 </div>
             </div>
@@ -50,8 +63,13 @@
                     <dd class="order-confirm__text" id="payment_method_label">未選択</dd>
                 </div>
             </dl>
-            <form action="{{ route('orders.store', ['item_id' => $item->id]) }}" method="POST" class="order-confirm__form">
+            <form action="{{ route('orders.store', ['item_id' => $item->id]) }}" method="POST"
+                class="order-confirm__form">
                 @csrf
+                <input type="hidden" name="postal_code"
+                    value="{{ session('postal_code') ?? $user->profile->postal_code }}">
+                <input type="hidden" name="address" value="{{ session('address') ?? $user->profile->address }}">
+                <input type="hidden" name="building" value="{{ session('building') ?? $user->profile?->building }}">
                 <input type="hidden" name="payment_method" id="payment_method_hidden">
                 <button type="submit" class="order-confirm__button">購入する</button>
             </form>
