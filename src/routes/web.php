@@ -26,7 +26,6 @@ Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('items.show
 
 Route::post('/webhook/stripe', [WebhookController::class, 'handle']);
 
-
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/sell', [ItemController::class, 'create'])->name('items.create');
     Route::post('/sell', [ItemController::class, 'store'])->name('items.store');
