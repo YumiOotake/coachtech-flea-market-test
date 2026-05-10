@@ -9,6 +9,7 @@ use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Concerns\ReplacesAttributes;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('comment/{item_id}', [CommentController::class, 'store'])->name('comment.store');
 
     Route::get('/purchase/{item_id}', [OrderController::class, 'create'])->name('orders.create');
+    Route::post('/purchase/payment/{item_id}', [OrderController::class, 'storePaymentMethod'])->name('orders.payment');
     Route::post('/purchase/{item_id}', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/purchase/{item_id}/success', [OrderController::class, 'success'])->name('orders.success');
     Route::get('/purchase/{item_id}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');

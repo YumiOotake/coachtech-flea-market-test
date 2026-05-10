@@ -17,11 +17,15 @@
             <div class="order-confirm__group">
                 <div class="order-confirm__item">
                     <h2 class="order-confirm__label">支払い方法</h2>
-                    <select name="payment_method" class="order-confirm__select" id="payment_method">
-                        <option value="">選択してください</option>
-                        <option value="0">コンビニ支払い</option>
-                        <option value="1">カード支払い</option>
-                    </select>
+                    <form action="{{ route('orders.payment', ['item_id' => $item->id]) }}" method="POST">
+                        @csrf
+                        <select name="payment_method" onchange="this.form.submit()" class="order-confirm__select">
+                            <option value="">選択してください</option>
+                            <option value="0" {{ session('payment_method') === '0' ? 'selected' : '' }}>コンビニ支払い</option>
+                            <option value="1" {{ session('payment_method') === '1' ? 'selected' : '' }}>カード支払い</option>
+                        </select>
+                    </form>
+
                     <div class="form__error">
                         @error('payment_method')
                             {{ $message }}
@@ -40,13 +44,13 @@
                         <p class="order-confirm__text">{{ session('address') ?? $user->profile->address }}</p>
                         <p class="order-confirm__text">{{ session('building') ?? $user->profile?->building }}</p>
                         <div class="form__error">
-                        @error('postal_code')
-                            {{ $message }}
-                        @enderror
-                        @error('address')
-                            {{ $message }}
-                        @enderror
-                    </div>
+                            @error('postal_code')
+                                {{ $message }}
+                            @enderror
+                            @error('address')
+                                {{ $message }}
+                            @enderror
+                        </div>
                     </div>
                 </div>
             </div>
@@ -60,7 +64,7 @@
                 </div>
                 <div class="order-confirm__summary-row">
                     <dt class="order-confirm__summary-label">支払い方法</dt>
-                    <dd class="order-confirm__text" id="payment_method_label">未選択</dd>
+                    <dd class="order-confirm__text" id="payment_method_label">{{ $paymentLabel }}</dd>
                 </div>
             </dl>
             <form action="{{ route('orders.store', ['item_id' => $item->id]) }}" method="POST"
@@ -70,19 +74,9 @@
                     value="{{ session('postal_code') ?? $user->profile->postal_code }}">
                 <input type="hidden" name="address" value="{{ session('address') ?? $user->profile->address }}">
                 <input type="hidden" name="building" value="{{ session('building') ?? $user->profile?->building }}">
-                <input type="hidden" name="payment_method" id="payment_method_hidden">
+                <input type="hidden" name="payment_method" value="{{ session('payment_method') }}">
                 <button type="submit" class="order-confirm__button">購入する</button>
             </form>
         </div>
     </div>
-    <script>
-        document.getElementById('payment_method').addEventListener('change', function() {
-            const labels = {
-                '0': 'コンビニ支払い',
-                '1': 'カード支払い',
-            };
-            document.getElementById('payment_method_label').textContent = labels[this.value];
-            document.getElementById('payment_method_hidden').value = this.value;
-        });
-    </script>
 @endsection

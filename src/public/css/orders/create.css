@@ -94,7 +94,7 @@
     color: var(--color-red);
     text-align: left;
     margin-top: 5px;
-    margin-left: 96px;
+    margin-left: 72px;
 }
 
 @media (min-width: 1400px) and (max-width: 1540px) {

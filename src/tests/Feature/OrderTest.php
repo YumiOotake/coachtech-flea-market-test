@@ -146,30 +146,37 @@ class OrderTest extends TestCase
         $response->assertSee('テスト商品');
     }
 
-    // /** @test */
-    // public function 小計画面で変更が反映される(): void
-    // {
-    //     $this->seed();
+    /** @test */
+    public function 小計画面で変更が反映される(): void
+    {
+        $this->seed();
 
-    //     $user = User::factory()->create();
-    //     $user->profile()->create([
-    //         'postal_code' => '123-4567',
-    //         'address' => 'テスト住所',
-    //         'building' => 'テスト建物',
-    //     ]);
-    //     $item = Item::factory()->create();
+        $user = User::factory()->create();
+        $user->profile()->create([
+            'postal_code' => '123-4567',
+            'address' => 'テスト住所',
+            'building' => 'テスト建物',
+        ]);
+        $item = Item::factory()->create();
 
-    //     $response = $this->actingAs($user)
-    //         ->get(route('orders.create', ['item_id' => $item->id]));
+        $this->actingAs($user)
+            ->get(route('orders.create', ['item_id' => $item->id]))
+            ->assertStatus(200);
 
-    //     $response->assertStatus(200)
-    //         ->assertSee('選択してください')
-    //         ->assertSee('コンビニ支払い')
-    //         ->assertSee('カード支払い')
-    //         ->assertSee('未選択')
-    //         ->assertSee('id="payment_method"', false)
-    //         ->assertSee('id="payment_method_label"', false);
-    // }
+        $response = $this->actingAs($user)
+            ->post(route('orders.payment', ['item_id' => $item->id]), ['payment_method' => 0]);
+
+        $response->assertRedirect(route('orders.create', ['item_id' => $item->id]))
+            ->assertSessionHas('payment_method', '0');
+
+        $response = $this->actingAs($user)
+            ->get(route('orders.create', ['item_id' => $item->id]));
+
+        $response->assertStatus(200)
+            ->assertSee('コンビニ支払い')
+            ->assertSee('value="0" selected', false)
+            ->assertSee('name="payment_method" value="0"', false);
+    }
 
     /** @test */
     public function 送付先住所変更画面にて登録した住所が商品購入画面に反映されている(): void

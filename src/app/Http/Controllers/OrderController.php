@@ -16,8 +16,13 @@ class OrderController extends Controller
     {
         $user = auth()->user();
         $item = Item::findOrFail($item_id);
+        $paymentLabel = match(session('payment_method')) {
+            '0' => 'コンビニ支払い',
+            '1' => 'カード支払い',
+            default => '未選択'
+        };
 
-        return view('orders.create', compact('item', 'user'));
+        return view('orders.create', compact('item', 'user', 'paymentLabel'));
     }
 
     public function store(PurchaseRequest $request, $item_id)
@@ -62,27 +67,6 @@ class OrderController extends Controller
 
     public function success(Request $request, $item_id)
     {
-        // Stripe::setApiKey(config('services.stripe.secret'));
-
-        // // session_idでStripeに決済完了を確認
-        // $session = Session::retrieve($request->session_id);
-
-        // // 念のため決済完了チェック（不正アクセス対策）
-        // if ($session->payment_status !== 'paid') {
-        //     return redirect()->route('items.show', ['item_id' => $item_id]);
-        // }
-
-        // $user = auth()->user();
-
-        // Order::create([
-        //     'user_id' => $user->id,
-        //     'item_id' => $item_id,
-        //     'postal_code' => $session->metadata->postal_code,
-        //     'address' => $session->metadata->address,
-        //     'building' => $session->metadata->building,
-        //     'payment_method' => $session->metadata->payment_method,
-        // ]);
-
         return redirect()->route('items.index');
     }
 
@@ -108,6 +92,13 @@ class OrderController extends Controller
             'building',
         ]);
         session($order);
+
+        return redirect()->route('orders.create', ['item_id' => $item_id]);
+    }
+
+    public function storePaymentMethod(Request $request, $item_id)
+    {
+        session(['payment_method' => $request->payment_method]);
 
         return redirect()->route('orders.create', ['item_id' => $item_id]);
     }
