@@ -7,9 +7,6 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Concerns\ReplacesAttributes;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,20 +46,3 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/mypage/profile', [MypageController::class, 'edit'])->name('mypage.edit');
     Route::patch('/mypage/profile', [MypageController::class, 'update'])->name('mypage.update');
 });
-
-//メールのURLクリックで表示//未認証の人がアクセスすると表示
-Route::get('/email/verify', function () {
-    return view('auth.verify-email');
-})->middleware('auth')->name('verification.notice');
-
-//認証済みにするemail_verified_at に日時入れる
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
-    return redirect()->route('mypage.edit');
-})->middleware(['auth', 'signed'])->name('verification.verify');
-
-//認証メール再送
-Route::post('/email/verification-notification', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
-    return back();
-})->middleware(['auth', 'throttle:6,1'])->name('verification.send');

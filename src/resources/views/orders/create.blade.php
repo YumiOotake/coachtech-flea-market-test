@@ -21,8 +21,8 @@
                         @csrf
                         <select name="payment_method" onchange="this.form.submit()" class="order-confirm__select">
                             <option value="">選択してください</option>
-                            <option value="0" {{ session('payment_method') === '0' ? 'selected' : '' }}>コンビニ支払い</option>
-                            <option value="1" {{ session('payment_method') === '1' ? 'selected' : '' }}>カード支払い</option>
+                            <option value="0" {{ (string) session('payment_method') === '0' ? 'selected' : '' }}>コンビニ支払い</option>
+                            <option value="1" {{ (string) session('payment_method') === '1' ? 'selected' : '' }}>カード支払い</option>
                         </select>
                     </form>
 
@@ -64,7 +64,7 @@
                 </div>
                 <div class="order-confirm__summary-row">
                     <dt class="order-confirm__summary-label">支払い方法</dt>
-                    <dd class="order-confirm__text" id="payment_method_label">{{ $paymentLabel }}</dd>
+                    <dd class="order-confirm__text">{{ $paymentLabel }}</dd>
                 </div>
             </dl>
             <form action="{{ route('orders.store', ['item_id' => $item->id]) }}" method="POST"

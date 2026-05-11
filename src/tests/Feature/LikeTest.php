@@ -31,7 +31,9 @@ class LikeTest extends TestCase
             'item_id' => $item->id
         ]));
 
-        $response->assertSee('1');
+        $response->assertStatus(200)
+            ->assertSee('<span class="item-show__like-count">1</span>', false);
+
         $this->assertDatabaseHas('likes', [
             'user_id' => $user->id,
             'item_id' => $item->id,
@@ -85,7 +87,9 @@ class LikeTest extends TestCase
             'item_id' => $item->id
         ]));
 
-        $response->assertSee('0');
+        $response->assertStatus(200)
+            ->assertSee('<span class="item-show__like-count">0</span>', false);
+
         $this->assertDatabaseMissing('likes', [
             'user_id' => $user->id,
             'item_id' => $item->id,

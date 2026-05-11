@@ -14,7 +14,6 @@ class OrderTest extends TestCase
 
     private function 購入完了データを作成する()
     {
-        $this->seed();
 
         $user = User::factory()->create();
         $user->profile()->create([
@@ -94,6 +93,7 @@ class OrderTest extends TestCase
     /** @test */
     public function 「購入する」ボタンを押下すると購入が完了する(): void
     {
+        $this->seed();
         [$user, $item] = $this->購入完了データを作成する();
 
         $this->assertDatabaseHas('orders', [
@@ -109,6 +109,7 @@ class OrderTest extends TestCase
     /** @test */
     public function 購入した商品は商品一覧画面にて「sold」と表示される(): void
     {
+        $this->seed();
         [$user, $item] = $this->購入完了データを作成する();
 
         $this->assertDatabaseHas('orders', [
@@ -129,6 +130,7 @@ class OrderTest extends TestCase
     /** @test */
     public function 「プロフィールの購入した商品一覧」に追加されている(): void
     {
+        $this->seed();
         [$user, $item] = $this->購入完了データを作成する();
 
         $this->assertDatabaseHas('orders', [
@@ -140,7 +142,7 @@ class OrderTest extends TestCase
             'payment_method' => 1,
         ]);
 
-        $response = $this->get(route('mypage.index', ['page' => 'buy']));
+        $response = $this->actingAs($user)->get(route('mypage.index', ['page' => 'buy']));
 
         $response->assertStatus(200);
         $response->assertSee('テスト商品');
@@ -173,7 +175,7 @@ class OrderTest extends TestCase
             ->get(route('orders.create', ['item_id' => $item->id]));
 
         $response->assertStatus(200)
-            ->assertSee('コンビニ支払い')
+            ->assertSee('<dd class="order-confirm__text">コンビニ支払い</dd>', false)
             ->assertSee('value="0" selected', false)
             ->assertSee('name="payment_method" value="0"', false);
     }

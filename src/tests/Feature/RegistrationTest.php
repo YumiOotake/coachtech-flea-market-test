@@ -95,7 +95,7 @@ class RegistrationTest extends TestCase
     }
 
     /** @test */
-    public function 全ての項目が入力されている場合、会員情報が登録され、メール認証誘導画面に遷移される(): void
+    public function 全ての項目が入力されている場合、会員情報が登録され、プロフィール設定画面に遷移される(): void
     {
         $this->get(route('register'))
             ->assertStatus(200)
@@ -108,7 +108,7 @@ class RegistrationTest extends TestCase
             'password_confirmation' => 'password123',
         ]);
 
-        $response->assertRedirect(route('verification.notice'));
+        $response->assertRedirect(route('mypage.edit'));
         $this->assertDatabaseHas('users', [
             'name' => 'テストユーザー',
             'email' => 'test@example.com',

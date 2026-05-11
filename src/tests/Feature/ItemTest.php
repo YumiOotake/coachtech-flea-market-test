@@ -248,7 +248,8 @@ class ItemTest extends TestCase
             ->assertSee('2,000')
             ->assertSee('テスト商品説明')
             ->assertSee('ファッション')
-            ->assertSee('1')
+            ->assertSee('<span class="item-show__like-count">1</span>', false)
+            ->assertSee('<span class="item-show__comment-count">1</span>', false)
             ->assertSee('商品コメント')
             ->assertSee('コメントユーザー')
             ->assertSee('良好');

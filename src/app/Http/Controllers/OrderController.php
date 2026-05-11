@@ -16,7 +16,7 @@ class OrderController extends Controller
     {
         $user = auth()->user();
         $item = Item::findOrFail($item_id);
-        $paymentLabel = match(session('payment_method')) {
+        $paymentLabel = match((string) session('payment_method')) {
             '0' => 'コンビニ支払い',
             '1' => 'カード支払い',
             default => '未選択'

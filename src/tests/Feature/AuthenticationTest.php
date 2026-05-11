@@ -83,7 +83,7 @@ class AuthenticationTest extends TestCase
     /** @test */
     public function ログアウトができる(): void
     {
-        User::factory()->create([
+        $user = User::factory()->create([
             'email' => 'test@example.com',
             'password' => bcrypt('password123'),
         ]);
@@ -93,7 +93,7 @@ class AuthenticationTest extends TestCase
             'password' => 'password123',
         ]);
 
-        $response = $this->post(route('logout'));
+        $response = $this->actingAs($user)->post(route('logout'));
 
         $response->assertRedirect(route('items.index'));
         $this->assertGuest();

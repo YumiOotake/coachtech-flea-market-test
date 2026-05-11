@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\RegisterResponse;
+use Laravel\Fortify\Contracts\VerifyEmailResponse;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -48,7 +49,7 @@ class FortifyServiceProvider extends ServiceProvider
         $this->app->instance(RegisterResponse::class, new class implements RegisterResponse {
             public function toResponse($request)
             {
-                return redirect()->route('verification.notice');
+                return redirect()->route('mypage.edit');
             }
         });
 
@@ -60,7 +61,7 @@ class FortifyServiceProvider extends ServiceProvider
                 $profile = Profile::where('user_id', $user->id)->first();
 
                 if (!$user->hasVerifiedEmail()) {
-                    return redirect()->route('verification.notice');
+                    return redirect()->route('mypage.edit');
                 }
 
                 if (!$profile || is_null($profile->postal_code) || is_null($profile->address)) {
@@ -70,12 +71,23 @@ class FortifyServiceProvider extends ServiceProvider
             }
         });
 
+        $this->app->instance(VerifyEmailResponse::class, new class implements VerifyEmailResponse {
+            public function toResponse($request)
+            {
+                return redirect()->route('mypage.edit');
+            }
+        });
+
         Fortify::registerView(function () {
             return view('auth.register');
         });
 
         Fortify::loginView(function () {
             return view('auth.login');
+        });
+
+        Fortify::verifyEmailView(function () {
+            return view('auth.verify-email');
         });
     }
 }

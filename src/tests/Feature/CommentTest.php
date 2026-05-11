@@ -27,7 +27,9 @@ class CommentTest extends TestCase
             'item_id' => $item->id
         ]));
 
-        $response->assertSee('1');
+        $response->assertStatus(200)
+            ->assertSee('<span class="item-show__comment-count">1</span>', false);
+
         $this->assertDatabaseHas('comments', [
             'user_id' => $user->id,
             'item_id' => $item->id,
