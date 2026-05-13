@@ -14,8 +14,7 @@
                     <label for="email" class="form__label">メールアドレス</label>
                 </div>
                 <div class="form__group-content">
-                    <input type="text" id="email" name="email" value="{{ old('email') }}"
-                        class="form__input">
+                    <input type="text" id="email" name="email" value="{{ old('email') }}" class="form__input">
                 </div>
                 <div class="form__error">
                     @error('email')

@@ -38,6 +38,7 @@
     width: 100%;
     aspect-ratio: 1 / 1;
     overflow: hidden;
+    border-radius: 4px;
 }
 
 .item-card__img {
@@ -75,12 +76,12 @@
 
 @media screen and (min-width: 1400px) and (max-width: 1540px) {
     .item__list {
-            grid-template-columns: repeat(4, 1fr);
-            gap: 32px;
-            padding: 48px 4%;
-        }
+        grid-template-columns: repeat(4, 1fr);
+        gap: 32px;
+        padding: 48px 4%;
+    }
 
-        .item-card__title {
-            font-size: 22px;
-        }
+    .item-card__title {
+        font-size: 22px;
+    }
 }

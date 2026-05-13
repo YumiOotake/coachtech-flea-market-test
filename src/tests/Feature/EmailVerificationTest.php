@@ -18,7 +18,7 @@ class EmailVerificationTest extends TestCase
     {
         Notification::fake();
 
-        $response = $this->post(route('register'), [
+        $this->post(route('register'), [
             'name' => 'テストユーザー',
             'email' => 'test@example.com',
             'password' => 'password123',
@@ -49,7 +49,7 @@ class EmailVerificationTest extends TestCase
         $verificationUrl = URL::temporarySignedRoute(
             'verification.verify',
             now()->addMinutes(60),
-            ['id' => $user->id, 'hash'=>sha1($user->email)]
+            ['id' => $user->id, 'hash' => sha1($user->email)]
         );
 
         $response = $this->actingAs($user)->get($verificationUrl);

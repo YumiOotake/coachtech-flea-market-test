@@ -12,33 +12,25 @@ class ItemController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Item::query();
         $user = auth()->user();
         $tab = $request->query('tab');
         $keyword = $request->query('keyword');
 
+        if ($tab === 'mylist' && !auth()->check()) {
+            $items = collect();
+            return view('items/index', compact('items'));
+        }
+
         if ($tab === 'mylist') {
-            if (!auth()->check()) {
-                $items = collect();
-                return view('items/index', compact('items'));
-            } else {
-                $items = $user->likedItems();
-                if (!empty($keyword)) {
-                    $items->where('name', 'like', "%{$keyword}%");
-                }
-            }
+            $items = $user->likedItems();
+        } elseif (auth()->check()) {
+            $items = Item::where('user_id', '!=', auth()->id());
         } else {
-            if (!auth()->check()) {
-                $items = Item::query();
-                if (!empty($keyword)) {
-                    $items->where('name', 'like', "%{$keyword}%");
-                }
-            } else {
-                $items = Item::where('user_id', '!=', auth()->id());
-                if (!empty($keyword)) {
-                    $items->where('name', 'like', "%{$keyword}%");
-                }
-            }
+            $items = Item::query();
+        }
+
+        if (!empty($keyword)) {
+            $items->where('name', 'like', "%{$keyword}%");
         }
 
         $items = $items->get();

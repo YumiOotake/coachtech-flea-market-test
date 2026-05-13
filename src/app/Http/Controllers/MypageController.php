@@ -14,9 +14,7 @@ class MypageController extends Controller
         $user = auth()->user();
         $page = $request->query('page');
 
-        $items = $user->items()->get();
-
-        if ($page === 'sell') {
+        if ($page === 'sell' || $page === null) {
             $items = $user->items()->get();
         } elseif ($page === 'buy') {
             $items = $user->orders()->with('item')->get()->pluck('item');

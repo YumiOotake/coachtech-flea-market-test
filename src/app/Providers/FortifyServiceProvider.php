@@ -61,7 +61,7 @@ class FortifyServiceProvider extends ServiceProvider
                 $profile = Profile::where('user_id', $user->id)->first();
 
                 if (!$user->hasVerifiedEmail()) {
-                    return redirect()->route('mypage.edit');
+                    return redirect()->route('verification.notice');
                 }
 
                 if (!$profile || is_null($profile->postal_code) || is_null($profile->address)) {

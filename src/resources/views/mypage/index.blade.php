@@ -20,7 +20,7 @@
     <div class="item__content">
         <div class="item__heading">
             <a href="{{ route('mypage.index', ['page' => 'sell']) }}"
-                class="item__tab {{ request('page') === 'sell' ? 'item__tab--active' : '' }}">出品した商品</a>
+                class="item__tab {{ request('page') === 'sell' || request('page') === null ? 'item__tab--active' : '' }}">出品した商品</a>
             <a href="{{ route('mypage.index', ['page' => 'buy']) }}"
                 class="item__tab {{ request('page') === 'buy' ? 'item__tab--active' : '' }}">購入した商品</a>
         </div>

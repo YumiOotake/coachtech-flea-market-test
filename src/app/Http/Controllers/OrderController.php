@@ -40,8 +40,8 @@ class OrderController extends Controller
             'payment_method_types' => $paymentMethodTypes,
             'line_items' => [[
                 'price_data' => [
-                    'currency'     => 'jpy',        // 日本円
-                    'unit_amount'  => $item->price, // 円はそのまま（ドルは×100が必要）
+                    'currency' => 'jpy',
+                    'unit_amount' => $item->price,
                     'product_data' => [
                         'name' => $item->name,
                     ],
@@ -57,7 +57,6 @@ class OrderController extends Controller
                 'address' => $request->address,
                 'building' => $request->building,
             ],
-            // 成功・キャンセル時のリダイレクト先
             'success_url' => route('orders.success', ['item_id' => $item_id]) . '?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url'  => route('orders.cancel', ['item_id' => $item_id]),
         ]);
@@ -65,7 +64,7 @@ class OrderController extends Controller
         return redirect($session->url);
     }
 
-    public function success(Request $request, $item_id)
+    public function success()
     {
         return redirect()->route('items.index');
     }

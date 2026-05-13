@@ -14,8 +14,7 @@
                     <label for="name" class="form__label">ユーザー名</label>
                 </div>
                 <div class="form__group-content">
-                    <input type="text" id="name" name="name" value="{{ old('name') }}"
-                        class="form__input">
+                    <input type="text" id="name" name="name" value="{{ old('name') }}" class="form__input">
                 </div>
                 <div class="form__error">
                     @error('name')
@@ -28,8 +27,7 @@
                     <label for="email" class="form__label">メールアドレス</label>
                 </div>
                 <div class="form__group-content">
-                    <input type="text" id="email" name="email" value="{{ old('email') }}"
-                        class="form__input">
+                    <input type="text" id="email" name="email" value="{{ old('email') }}" class="form__input">
                 </div>
                 <div class="form__error">
                     @error('email')
