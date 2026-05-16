@@ -5,7 +5,7 @@
 @section('content')
     <div class="order-confirm">
         <div class="order-confirm__left">
-            <div class="order-confirm__group order-confirm__detail">
+            <section class="order-confirm__group order-confirm__detail">
                 <div class="order-confirm__item">
                     <img src="{{ asset('storage/' . $item->image) }}" alt="商品画像" class="order-confirm__image">
                 </div>
@@ -13,8 +13,8 @@
                     <h1 class="order-confirm__name">{{ $item->name }}</h1>
                     <p class="order-confirm__price">¥ {{ number_format($item->price) }}</p>
                 </div>
-            </div>
-            <div class="order-confirm__group">
+            </section>
+            <section class="order-confirm__group">
                 <div class="order-confirm__item">
                     <h2 class="order-confirm__label">支払い方法</h2>
                     <form action="{{ route('orders.payment', ['item_id' => $item->id]) }}" method="POST">
@@ -33,8 +33,8 @@
                         @enderror
                     </div>
                 </div>
-            </div>
-            <div class="order-confirm__group">
+            </section>
+            <section class="order-confirm__group">
                 <div class="order-confirm__item">
                     <div class="order-confirm__address-header">
                         <h2 class="order-confirm__label">配送先</h2>
@@ -54,9 +54,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
-
         <div class="order-confirm__right">
             <dl class="order-confirm__summary">
                 <div class="order-confirm__summary-row">
