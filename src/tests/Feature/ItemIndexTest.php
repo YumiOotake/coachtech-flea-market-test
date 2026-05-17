@@ -2,17 +2,14 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 use App\Models\Item;
-use App\Models\Like;
 use App\Models\Order;
 use App\Models\User;
-use App\Models\Comment;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
-use Tests\TestCase;
+use App\Models\Like;
 
-class ItemTest extends TestCase
+class ItemIndexTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -88,7 +85,7 @@ class ItemTest extends TestCase
         $likedItem = Item::factory()->create([
             'name' => 'テスト商品1',
         ]);
-        $item = Item::factory()->create([
+        Item::factory()->create([
             'name' => 'テスト商品2',
         ]);
         Like::create([
@@ -210,102 +207,5 @@ class ItemTest extends TestCase
             ->assertSee('一致する商品')
             ->assertDontSee('一致しない商品')
             ->assertSee('value="一致する"', false);
-    }
-
-    //商品詳細情報取得
-    /** @test */
-    public function 必要な情報が表示される(): void
-    {
-        $this->seed();
-        $user = User::factory()->create([
-            'name' => 'コメントユーザー',
-        ]);
-        $item = Item::factory()->create([
-            'image' => 'test.png',
-            'name' => 'テスト商品',
-            'brand' => 'テストブランド',
-            'price' => 2000,
-            'description' => 'テスト商品説明',
-            'condition_id' => 1,
-        ]);
-        $item->categories()->attach(1);
-        Like::create([
-            'user_id' => $user->id,
-            'item_id' => $item->id,
-        ]);
-        Comment::create([
-            'user_id' => $user->id,
-            'item_id' => $item->id,
-            'content' => '商品コメント',
-        ]);
-
-        $response = $this->get(route('items.show', ['item_id' => $item->id]));
-
-        $response->assertStatus(200)
-            ->assertSee('src="' . asset('storage/test.png') . '"', false)
-            ->assertSee('テスト商品')
-            ->assertSee('テストブランド')
-            ->assertSee('2,000')
-            ->assertSee('テスト商品説明')
-            ->assertSee('ファッション')
-            ->assertSee('<span class="item-show__like-count">1</span>', false)
-            ->assertSee('<span class="item-show__comment-count">1</span>', false)
-            ->assertSee('商品コメント')
-            ->assertSee('コメントユーザー')
-            ->assertSee('良好');
-    }
-
-    /** @test */
-    public function 複数選択されたカテゴリが表示されているか(): void
-    {
-        $this->seed();
-        $item = Item::factory()->create();
-        $item->categories()->attach([1, 2, 3]);
-
-        $response = $this->get(route('items.show', ['item_id' => $item->id]));
-
-        $response->assertStatus(200)
-            ->assertSee('ファッション')
-            ->assertSee('家電')
-            ->assertSee('インテリア');
-    }
-
-    //出品商品情報登録
-    /** @test */
-    public function 商品出品画面にて必要な情報が保存できること（カテゴリ、商品の状態、商品名、ブランド名、商品の説明、販売価格）(): void
-    {
-        $this->seed();
-        $user = User::factory()->create();
-        Storage::fake('public');
-
-        $this->actingAs($user)->get(route('items.create'))
-            ->assertStatus(200);
-
-        $image = UploadedFile::fake()->create('item.png');
-        $this->actingAs($user)->post(route('items.store'), [
-            'image' => $image,
-            'name' => 'テスト商品',
-            'brand' => 'テストブランド',
-            'price' => 2000,
-            'description' => 'テスト商品説明',
-            'condition_id' => 1,
-            'category_id' => [1],
-        ])->assertRedirect(route('mypage.index'));
-
-        $item = Item::where('name', 'テスト商品')->first();
-
-        $this->assertDatabaseHas('items', [
-            'user_id' => $user->id,
-            'name' => 'テスト商品',
-            'brand' => 'テストブランド',
-            'price' => 2000,
-            'description' => 'テスト商品説明',
-            'condition_id' => 1,
-        ]);
-        $this->assertDatabaseHas('category_item', [
-            'item_id' => $item->id,
-            'category_id' => 1,
-        ]);
-        Storage::disk('public')->assertExists($item->image);
     }
 }

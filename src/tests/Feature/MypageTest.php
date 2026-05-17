@@ -31,7 +31,7 @@ class MypageTest extends TestCase
             'user_id' => $otherUser->id,
             'name' => '購入した商品名',
         ]);
-        $sellItem = Item::factory()->create([
+        Item::factory()->create([
             'user_id' => $user->id,
             'name' => '出品した商品名',
         ]);
