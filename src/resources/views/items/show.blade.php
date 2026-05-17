@@ -52,11 +52,11 @@
                     </div>
                 </div>
             </section>
-            <div class="item-show__section item-show__button">
+            <section class="item-show__section item-show__button">
                 <a href="{{ route('orders.create', ['item_id' => $item->id]) }}" class="item-show__button--purchase">
                     購入手続きへ
                 </a>
-            </div>
+            </section>
             <section class="item-show__section">
                 <h2 class="item-show__title">商品説明</h2>
                 <p class="item-show__description">{{ $item->description }}</p>
