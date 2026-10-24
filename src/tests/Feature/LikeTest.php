@@ -6,13 +6,14 @@ use App\Models\Item;
 use App\Models\Like;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class LikeTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function いいねアイコンを押下することによって、いいねした商品として登録することができる(): void
     {
         $this->seed();
@@ -40,7 +41,7 @@ class LikeTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function 追加済みのアイコンは色が変化する(): void
     {
         $this->seed();
@@ -64,7 +65,7 @@ class LikeTest extends TestCase
         $response->assertSee('src="' . asset('storage/' . 'images/ハートロゴ_ピンク.png') . '"', false);
     }
 
-    /** @test */
+    #[Test]
     public function 再度いいねアイコンを押下することによって、いいねを解除することができる(): void
     {
         $this->seed();

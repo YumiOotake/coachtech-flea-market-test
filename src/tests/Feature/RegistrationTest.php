@@ -3,13 +3,14 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class RegistrationTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function 名前が入力されていない場合、バリデーションメッセージが表示される(): void
     {
         $this->get(route('register'))
@@ -26,7 +27,7 @@ class RegistrationTest extends TestCase
         $response->assertSessionHasErrors(['name' => 'お名前を入力してください']);
     }
 
-    /** @test */
+    #[Test]
     public function メールアドレスが入力されていない場合、バリデーションメッセージが表示される(): void
     {
         $this->get(route('register'))
@@ -43,7 +44,7 @@ class RegistrationTest extends TestCase
         $response->assertSessionHasErrors(['email' => 'メールアドレスを入力してください']);
     }
 
-    /** @test */
+    #[Test]
     public function パスワードが入力されていない場合、バリデーションメッセージが表示される(): void
     {
         $this->get(route('register'))
@@ -60,7 +61,7 @@ class RegistrationTest extends TestCase
         $response->assertSessionHasErrors(['password' => 'パスワードを入力してください']);
     }
 
-    /** @test */
+    #[Test]
     public function パスワードが7文字以下の場合、バリデーションメッセージが表示される(): void
     {
         $this->get(route('register'))
@@ -77,7 +78,7 @@ class RegistrationTest extends TestCase
         $response->assertSessionHasErrors(['password' => 'パスワードは8文字以上で入力してください']);
     }
 
-    /** @test */
+    #[Test]
     public function パスワードが確認用パスワードと一致しない場合、バリデーションメッセージが表示される(): void
     {
         $this->get(route('register'))
@@ -94,7 +95,7 @@ class RegistrationTest extends TestCase
         $response->assertSessionHasErrors(['password_confirmation' => 'パスワードと一致しません']);
     }
 
-    /** @test */
+    #[Test]
     public function 全ての項目が入力されている場合、会員情報が登録され、プロフィール設定画面に遷移される(): void
     {
         $this->get(route('register'))

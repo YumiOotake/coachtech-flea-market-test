@@ -9,14 +9,14 @@ class WebhookController extends Controller
 {
     public function handle(Request $request)
     {
-        $payload = $request->getContent();
+        $payload = $request->getContent(); //Webhook の中身そのもの
         $event = \Stripe\Webhook::constructEvent(
             $payload,
             $request->header('Stripe-Signature'),
             config('services.stripe.webhook_secret')
-        );
+        ); //署名つきの通知を検証して、安全なら $event として使う
 
-        if ($event->type === 'checkout.session.completed') {
+        if ($event->type === 'checkout.session.completed') { //Checkout の支払い完了の時だけ
             $session = $event->data->object;
 
             Order::create([
@@ -29,6 +29,6 @@ class WebhookController extends Controller
             ]);
         }
 
-        return response()->json(['status' => 'ok']);
+        return response()->json(['status' => 'ok']); //Stripe から来た通知に対して、サーバーとして正常応答を返す
     }
 }

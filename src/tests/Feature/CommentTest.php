@@ -5,13 +5,14 @@ namespace Tests\Feature;
 use App\Models\Item;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class CommentTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function ログイン済みのユーザーはコメントを送信できる(): void
     {
         $this->seed();
@@ -37,7 +38,7 @@ class CommentTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function ログイン前のユーザーはコメントを送信できない(): void
     {
         $this->seed();
@@ -56,7 +57,7 @@ class CommentTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function コメントが入力されていない場合、バリデーションメッセージが表示される(): void
     {
         $this->seed();
@@ -71,7 +72,7 @@ class CommentTest extends TestCase
         $response->assertSessionHasErrors(['content' => '商品コメントを入力してください']);
     }
 
-    /** @test */
+    #[Test]
     public function コメントが255字以上の場合、バリデーションメッセージが表示される(): void
     {
         $this->seed();

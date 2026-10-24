@@ -6,13 +6,14 @@ use App\Models\Item;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class MypageTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function 必要な情報が取得できる（プロフィール画像、ユーザー名、出品した商品一覧、購入した商品一覧）(): void
     {
         $this->seed();
@@ -61,7 +62,7 @@ class MypageTest extends TestCase
             ->assertSee('購入した商品名');
     }
 
-    /** @test */
+    #[Test]
     public function 変更項目が初期値として過去設定されていること（プロフィール画像、ユーザー名、郵便番号、住所）(): void
     {
         $this->seed();

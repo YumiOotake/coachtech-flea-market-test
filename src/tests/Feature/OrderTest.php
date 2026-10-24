@@ -6,6 +6,7 @@ use App\Models\Item;
 use App\Models\User;
 use Mockery;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class OrderTest extends TestCase
@@ -90,7 +91,7 @@ class OrderTest extends TestCase
         return [$user, $item];
     }
 
-    /** @test */
+    #[Test]
     public function 「購入する」ボタンを押下すると購入が完了する(): void
     {
         $this->seed();
@@ -106,7 +107,7 @@ class OrderTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function 購入した商品は商品一覧画面にて「sold」と表示される(): void
     {
         $this->seed();
@@ -127,7 +128,7 @@ class OrderTest extends TestCase
         $response->assertSee('Sold');
     }
 
-    /** @test */
+    #[Test]
     public function 「プロフィールの購入した商品一覧」に追加されている(): void
     {
         $this->seed();
@@ -148,7 +149,7 @@ class OrderTest extends TestCase
         $response->assertSee('テスト商品');
     }
 
-    /** @test */
+    #[Test]
     public function 小計画面で変更が反映される(): void
     {
         $this->seed();
@@ -180,7 +181,7 @@ class OrderTest extends TestCase
             ->assertSee('name="payment_method" value="0"', false);
     }
 
-    /** @test */
+    #[Test]
     public function 送付先住所変更画面にて登録した住所が商品購入画面に反映されている(): void
     {
         $this->seed();
@@ -218,7 +219,7 @@ class OrderTest extends TestCase
             ->assertSee('テスト建物変更');
     }
 
-    /** @test */
+    #[Test]
     public function 購入した商品に送付先住所が紐づいて登録される(): void
     {
         $this->seed();

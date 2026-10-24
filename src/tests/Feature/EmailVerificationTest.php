@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Auth\Notifications\VerifyEmail;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Support\Facades\URL;
@@ -13,7 +14,7 @@ class EmailVerificationTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function 会員登録後、認証メールが送信される(): void
     {
         Notification::fake();
@@ -30,7 +31,7 @@ class EmailVerificationTest extends TestCase
         Notification::assertSentTo($user, VerifyEmail::class);
     }
 
-    /** @test */
+    #[Test]
     public function メール認証誘導画面で「認証はこちらから」ボタンを押下するとメール認証サイトに遷移する(): void
     {
         $user = User::factory()->create(['email_verified_at' => null]);
@@ -41,7 +42,7 @@ class EmailVerificationTest extends TestCase
             ->assertSee('href="https://mailtrap.io"', false);
     }
 
-    /** @test */
+    #[Test]
     public function メール認証サイトのメール認証を完了すると、プロフィール設定画面に遷移する(): void
     {
         $user = User::factory()->create(['email_verified_at' => null]);

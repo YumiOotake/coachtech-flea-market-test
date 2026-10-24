@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Models\Profile;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -67,7 +66,7 @@ class FortifyServiceProvider extends ServiceProvider
                 if (!$profile || is_null($profile->postal_code) || is_null($profile->address)) {
                     return redirect()->route('mypage.edit');
                 }
-                return redirect()->intended(RouteServiceProvider::HOME);
+                return redirect()->intended('/');
             }
         });
 

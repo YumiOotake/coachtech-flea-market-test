@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Item;
@@ -13,7 +14,7 @@ class ItemShowTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function 必要な情報が表示される(): void
     {
         $this->seed();
@@ -55,7 +56,7 @@ class ItemShowTest extends TestCase
             ->assertSee('良好');
     }
 
-    /** @test */
+    #[Test]
     public function 複数選択されたカテゴリが表示されているか(): void
     {
         $this->seed();

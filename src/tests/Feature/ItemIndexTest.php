@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use App\Models\Item;
 use App\Models\Order;
@@ -14,7 +15,7 @@ class ItemIndexTest extends TestCase
     use RefreshDatabase;
 
     //商品一覧取得
-    /** @test */
+    #[Test]
     public function 全商品を取得できる(): void
     {
         $this->seed();
@@ -36,7 +37,7 @@ class ItemIndexTest extends TestCase
             ->assertSee('テスト商品3');
     }
 
-    /** @test */
+    #[Test]
     public function 購入済み商品は「Sold」と表示される(): void
     {
         $this->seed();
@@ -60,7 +61,7 @@ class ItemIndexTest extends TestCase
         $response->assertSee('Sold');
     }
 
-    /** @test */
+    #[Test]
     public function 自分が出品した商品は表示されない(): void
     {
         $this->seed();
@@ -77,7 +78,7 @@ class ItemIndexTest extends TestCase
     }
 
     //マイリスト一覧取得
-    /** @test */
+    #[Test]
     public function いいねした商品だけが表示される(): void
     {
         $this->seed();
@@ -102,7 +103,7 @@ class ItemIndexTest extends TestCase
             ->assertDontSee('テスト商品2');
     }
 
-    /** @test */
+    #[Test]
     public function 購入済み商品は’Sold’と表示される(): void
     {
         $this->seed();
@@ -134,7 +135,7 @@ class ItemIndexTest extends TestCase
         $response->assertSee('Sold');
     }
 
-    /** @test */
+    #[Test]
     public function 未認証の場合は何も表示されない(): void
     {
         $this->seed();
@@ -153,7 +154,7 @@ class ItemIndexTest extends TestCase
     }
 
     //商品検索機能
-    /** @test */
+    #[Test]
     public function 「商品名」で部分一致検索ができる(): void
     {
         $this->seed();
@@ -173,7 +174,7 @@ class ItemIndexTest extends TestCase
             ->assertDontSee('一致しない商品');
     }
 
-    /** @test */
+    #[Test]
     public function 検索状態がマイリストでも保持されている(): void
     {
         $this->seed();

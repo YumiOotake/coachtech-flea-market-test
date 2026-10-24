@@ -84,8 +84,8 @@ php artisan config:clear
 
 ## 使用技術(実行環境)
 
-- PHP 8.1
-- Laravel 8.83.8
+- PHP 8.5
+- Laravel 13
 - Nginx 1.21.1
 - MySQL 8.0
 - phpMyAdmin

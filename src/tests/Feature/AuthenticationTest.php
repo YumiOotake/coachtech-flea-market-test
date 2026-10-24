@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use App\Models\User;
 
@@ -10,7 +11,7 @@ class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function メールアドレスが入力されていない場合、バリデーションメッセージが表示される(): void
     {
         $this->get(route('login'))
@@ -25,7 +26,7 @@ class AuthenticationTest extends TestCase
         $response->assertSessionHasErrors(['email' => 'メールアドレスを入力してください']);
     }
 
-    /** @test */
+    #[Test]
     public function パスワードが入力されていない場合、バリデーションメッセージが表示される(): void
     {
         $this->get(route('login'))
@@ -40,7 +41,7 @@ class AuthenticationTest extends TestCase
         $response->assertSessionHasErrors(['password' => 'パスワードを入力してください']);
     }
 
-    /** @test */
+    #[Test]
     public function 入力情報が間違っている場合、バリデーションメッセージが表示される(): void
     {
         User::factory()->create([
@@ -60,7 +61,7 @@ class AuthenticationTest extends TestCase
         $response->assertSessionHasErrors(['email' => 'ログイン情報が登録されていません']);
     }
 
-    /** @test */
+    #[Test]
     public function 正しい情報が入力された場合、ログイン処理が実行される(): void
     {
         User::factory()->create([
@@ -80,7 +81,7 @@ class AuthenticationTest extends TestCase
         $response->assertRedirect(route('mypage.edit'));
     }
 
-    /** @test */
+    #[Test]
     public function ログアウトができる(): void
     {
         $user = User::factory()->create([

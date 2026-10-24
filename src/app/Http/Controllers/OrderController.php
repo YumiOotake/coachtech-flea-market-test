@@ -60,7 +60,7 @@ class OrderController extends Controller
             'cancel_url'  => route('orders.cancel', ['item_id' => $item_id]),
         ]);
 
-        return redirect($session->url);
+        return redirect($session->url); //Stripe の決済画面へ飛ぶ
     }
 
     public function success()
